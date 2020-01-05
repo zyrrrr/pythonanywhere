@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>中国教育经费1999-2017</title>
+	<link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css">
+    <script src="https://cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script>
+    <script>
+        $(function () {
+            loadMenu();
+            $('#menuList').change(function() {
+                var val = $(this).children('option:selected').val();
+                selectMenu(val);
+            });
+            $("#mapBtn").click(function () {
+                location.href= "./pyecharts?isMap=true";
+            })
+        });
+
+
+        function loadMenu(){
+
+            $.post({
+                url:"menuList",
+                dataType: "json",
+                method:"get",
+                success: function (result) {
+                    $("#menuList").empty();
+                    for (const d of result['list']) {
+                        $("#menuList").append("<option value='"+d+"'>"+d+"</option>");
+                    }
+                    $("#menuList").get(0).selectedIndex=0;
+                }
+            })
+        }
+
+        function selectMenu(val){
+            // $("#mainiframe").attr("src", "barCharts?select="+val);
+            $("#mainiframe").attr("src", "pyecharts?select=" + val+"&isMap=false");
+            // $("#mainiframe").attr("src", "timeline?select=" + val+"&isMap="+$("#mapBtn").is(':checked'));
+
+        }
+
+    </script>
+
+</head>
+<body style="background-color: #EBFFEB">
+<h1 style="width: 100%;text-align: center;color:#014c76"><i class="fa fa-bar-chart" aria-hidden="true" style="font-size:35px;color:#7ba786;margin-right:10px"></i>{{result.indexTitle}}</h1>
+<p style="width: 100%;text-align: center;font-size:14px;color:#1b5335">改革开放以来，我国的经济发展势头迅猛，生活水平也得到了提高。而国家的发展，与教育是密不可分的。教育是立国之本，强国之基。国家的强盛兴旺离不开教育。<br />随着我国的经济发展和财力增强，国家对教育投入规模不断加大，从新闻调查发现，我国的教育支出也成为财政支出的第一大项，在巨大财力的支持下，我国教育领域发生了一系列重大变化。<br />我将通过可视化的方式分析1999年-2017年中国教育发展的情况。这里我将以各阶段学校的数量、以及教育经费的投入进行研究。</p>
+<p style="width: 100%;text-align: center;"><a style="text-decoration: none;#7ba786" href="https://github.com/NFUNM049/China-education"><i class="fa fa-link" aria-hidden="true" style="margin-right:5px"></i>点击查看具体图表分析</a></p>
+<div>
+<select id="menuList" style="cursor: pointer;margin-left:200px;background:#fafdfe;  
+    height:28px;  
+    width:180px;  
+    line-height:28px;  
+    border:1px solid #9bc0dd;  
+    -moz-border-radius:2px;  
+    -webkit-border-radius:2px;  
+    border-radius:2px;"></select>
+<button id="mapBtn" style="cursor: pointer;float:right;margin-right: 200px;background:#fafdfe;  
+    height:28px;  
+    width:280px;  
+    line-height:28px;  
+    border:1px solid #9bc0dd;  
+    -moz-border-radius:2px;  
+    -webkit-border-radius:2px;  
+    border-radius:2px;">{{result.mapName}}</button>
+</div>
+<div style="display:none;clear: both"></div>
+<p style="width: 100%;text-align: center;color:#1b5335">
+<i class="fa fa-university" aria-hidden="true"></i>
+<strong>点击下拉列表选择图表展示，</strong>下图为1999,2006,2011,2015,2017年各省份小学、初中、高中、高等教育、特殊教育的学校数量情况柱状图展示。</p> 
+<i class="fa fa-hand-o-down" aria-hidden="true" style="width: 100%;text-align: center;color:#db2035"></i>
+  <iframe id="mainiframe" src=""  width="100%" frameborder="0" scrolling="no" height="1700px"></iframe>
+</body>
+</html>
